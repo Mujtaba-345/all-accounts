@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Update Brands{% endblock %}
+{% block css %}
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .container-fluid {
+            flex: 1;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0; /* Height of the header */
+        }
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+        }
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            {% include 'sidebar.html' %}
+
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Brands</h1>
+                </div>
+            <!--display message-->
+            {% include 'messages.html' %}
+
+                <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Edit Brand</h2>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'brand_detail' brand_obj.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="brand_name" class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="brand_name" name="brand_name" required value="{{ brand_obj.name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="website" class="form-label">User</label>
+                        <input type="text" class="form-control" id="website" name="website" value="{{ brand_obj.user.email }}" readonly>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-success me-md-2">Update Brands</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+            </main>
+        </div>
+    </div>
+{% endblock %}

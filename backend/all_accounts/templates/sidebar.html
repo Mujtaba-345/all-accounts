@@ -1,0 +1,54 @@
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <h6 class="mx-3">Welcome to {{ request.user.username|title }} </h6>
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'dashboard' %}">
+                                    Dashboard
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{% url 'profile' request.user.id %}">
+                                    Profile
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'brands' %}">
+                                    Brands
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'shop' %}">
+                                    Shops
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'lager' %}">
+                                    Lager
+                                </a>
+                            </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'change_password' %}">
+                                        Change Password
+                                    </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                    Logout
+                                                    </a>
+
+                            <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+                                {% csrf_token %}
+                            </form>
+
+                            </li>
+                        </ul>
+                    </div>
+            </nav>

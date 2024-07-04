@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Shops{% endblock %}
+{% block css %}
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .container-fluid {
+            flex: 1;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0; /* Height of the header */
+        }
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+        }
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            {% include 'sidebar.html' %}
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Shops</h1>
+                </div>
+            <!--display message-->
+            {% include 'messages.html' %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-shop">
+              Add
+            </button>
+            <!-- Add Brand  Modal -->
+            <div class="modal fade" id="add-shop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Shop</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                 <form action="{% url 'shop' %}" method="post">
+                     {% csrf_token %}
+                  <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="shop_name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="shop_name" name="shop_name" placeholder="Enter Your Shop Name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="brand_select" class="form-label">Select Brand</label>
+                                    <select class="form-select" id="brand_select" name="brand" aria-label="Default select example" required>
+                                        <option>Select Brand Name</option>
+                                        {% for brand_obj in brand_choices_obj %}
+                                        <option value="{{ brand_obj.id }}">{{brand_obj.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                  </div>
+                 </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+                    <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Brand</th>
+                              <th scope="col">User</th>
+                              <th scope="col">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                           {% if shop_obj %}
+                          {% for shop in shop_obj %}
+                            <tr>
+                              <th scope="row">{{forloop.counter}}</th>
+                                <td><a href="{% url 'detail_shop' shop.id %}">{{ shop.name }}</a></td>
+                              <td>{{ shop.brand.name }}</td>
+                              <td>{{ shop.brand.user.email }}</td>
+                              <td>
+                                  <a href="{% url 'shop_detail' shop.id %}" type="button" class="btn btn-success me-2">
+                                      Edit
+                                  </a>
+
+                                  <form action="{% url 'delete_shop' shop.id %}" method="post" class="d-inline-block">
+                                      {% csrf_token %}
+                                  <button type="submit" class="btn btn-danger">Delete</button>
+                                  </form>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                           {% else %}
+                               <tr><td colspan="5"  style="text-align: center;">No Record Found</td></tr>
+                          {% endif %}
+                          </tbody>
+
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock %}

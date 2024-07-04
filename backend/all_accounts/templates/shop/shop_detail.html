@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ shop_detail.shop.name }}{% endblock %}
+{% block css %}
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .container-fluid {
+            flex: 1;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0; /* Height of the header */
+        }
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+        }
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            {% include 'sidebar.html' %}
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Shops</h1>
+                </div>
+            <div class="row mt-3">
+                     <div class="container my-5">
+                                <div class="row text-center">
+                                    <div class="col-lg-3 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Total Debit</h5>
+                                                <h1 class="display-4" id="brandCount">{{ shop_detail.debit }}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Total Credit</h5>
+                                                <h1 class="display-4" id="shopCount">{{ shop_detail.credit }}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Total Balance</h5>
+                                                <h1 class="display-4" id="brandCount">{{ shop_detail.opening_balance}}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 mb-4">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Current Balance</h5>
+                                                <h1 class="display-4" id="brandCount">{{ current_balance }}</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock %}

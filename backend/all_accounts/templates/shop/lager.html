@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Lager{% endblock %}
+{% block css %}
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .container-fluid {
+            flex: 1;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0; /* Height of the header */
+        }
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+        }
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            {% include 'sidebar.html' %}
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Lager</h1>
+                </div>
+            <!--display message-->
+            {% include 'messages.html' %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-lager">
+              Add
+            </button>
+            <!-- Add Lager  Modal -->
+            <div class="modal fade" id="add-lager" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Lager</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                 <form action="{% url 'lager' %}" method="post">
+                     {% csrf_token %}
+                  <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="shop_select" class="form-label">Select Shop</label>
+                                    <select class="form-select" id="shop_select" name="shop" aria-label="Default select example" required>
+                                        <option>Select Shop Name</option>
+                                        {% for shop_obj in shop_obj_choices %}
+                                        <option value="{{ shop_obj.id }}">{{shop_obj.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="credit" class="form-label">Credit</label>
+                                    <input type="text" class="form-control" id="credit" name="credit" placeholder="Enter Your Credit" required>
+                                </div>
+
+                                <div class="mb-3">
+                                        <label for="debit" class="form-label">Debit</label>
+                                        <input type="text" class="form-control" id="debit" name="debit" placeholder="Enter Your Debit" required>
+                                </div>
+
+                                <div class="mb-3">
+                                        <label for="opening_balance" class="form-label">Opening Balance</label>
+                                        <input type="text" class="form-control" id="opening_balance" name="opening_balance" placeholder="Enter Your Opening Balance" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                  </div>
+                 </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+                    <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Shop</th>
+                              <th scope="col">Credit</th>
+                              <th scope="col">Debit</th>
+                              <th scope="col">Opening Balance</th>
+                              <th scope="col">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {% if lager_obj %}
+                          {% for lager in lager_obj %}
+                            <tr>
+                              <th scope="row">{{forloop.counter}}</th>
+                              <td>{{ lager.shop.name }}</td>
+                              <td>{{ lager.credit }}</td>
+                              <td>{{ lager.debit }}</td>
+                              <td>{{ lager.opening_balance }}</td>
+                              <td>
+                                  <a href="{% url 'lager_detail' lager.id %}" type="button" class="btn btn-success me-2">
+                                      Edit
+                                  </a>
+
+                                  <form action="{% url 'delete_lager' lager.id   %}" method="post" class="d-inline-block">
+                                      {% csrf_token %}
+                                  <button type="submit" class="btn btn-danger">Delete</button>
+                                  </form>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                            {% else %}
+                              <tr><td colspan="5"  style="text-align: center;">No Record Found</td></tr>
+                          {% endif %}
+                          </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Update Shops{% endblock %}
+{% block css %}
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .container-fluid {
+            flex: 1;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0; /* Height of the header */
+        }
+        .main-content {
+            margin-left: 200px; /* Width of the sidebar */
+            padding: 20px;
+        }
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            {% include 'sidebar.html' %}
+
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Shop</h1>
+                </div>
+            <!--display message-->
+            {% include 'messages.html' %}
+
+                <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Edit Shop</h2>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'shop_detail' shop_obj.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="shop_name" class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="shop_name" name="shop_name" required value="{{ shop_obj.name }}">
+                    </div>
+                    <div class="mb-3">
+                         <label for="brand_select" class="form-label">Select Brand</label>
+                      <select class="form-select" id="brand_select" name="brand" aria-label="Default select example">
+                            {% for brand_obj in brand_choices_obj %}
+                            {% if brand_obj.id == shop_obj.brand.id %}
+                            <option selected value="{{ brand_obj.id }}">{{brand_obj.name}}</option>
+                            {% else %}
+                             <option value="{{ brand_obj.id }}">{{brand_obj.name}}</option>
+                            {% endif %}
+                            {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="website" class="form-label">User</label>
+                        <input type="text" class="form-control" id="website" name="website" value="{{ shop_obj.brand.user.email }}" readonly>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-success me-md-2">Update Brands</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+            </main>
+        </div>
+    </div>
+{% endblock %}
