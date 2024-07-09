@@ -42,7 +42,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'users.middleware.LoginRedirectMiddleware'
+    'users.middleware.LoginRedirectMiddleware',
+    'users.middleware.UnderConstructionMiddleware'
 ]
 
 ROOT_URLCONF = 'all_accounts.urls'
